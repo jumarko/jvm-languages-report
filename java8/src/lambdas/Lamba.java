@@ -8,6 +8,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
+import java.util.function.Consumer;
 
 public class Lamba {
 
@@ -25,9 +26,21 @@ public class Lamba {
     }
 
     private static void consumer() {
-        asList(10,1,4,5).forEach( number -> {
+        final Consumer<Integer> printNumber = number -> {
             if (number > 4) System.out.println(number);
-        });
+        };
+        final List<Integer> numbers = asList(10, 1, 4, 5);
+
+        // Note: forEach is new default method in Iterable interface
+        // This new approach to iteration is essential for multi-core support to abstract way the implementation details
+        // of iteration itself
+        numbers.forEach(printNumber.andThen(number -> System.out.println("I can see ya! " + number)));
+        // reference to my private method
+        numbers.forEach(Lamba::add2AndPrint);
+    }
+
+    private static void add2AndPrint(int number) {
+        System.out.print(number + 2);
     }
 
     private static void parameterLambda(Action action) {
