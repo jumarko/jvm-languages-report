@@ -1,6 +1,7 @@
 package lambdas;
 
 import static java.lang.String.format;
+import static java.util.Arrays.asList;
 
 import java.util.Arrays;
 import java.util.Comparator;
@@ -19,6 +20,14 @@ public class Lamba {
         parameterLambda(System.out::println);
         // but following case cannot be replaced with method reference
         parameterLambda((String a) -> System.out.println(a + " ::: " + a));
+
+        consumer();
+    }
+
+    private static void consumer() {
+        asList(10,1,4,5).forEach( number -> {
+            if (number > 4) System.out.println(number);
+        });
     }
 
     private static void parameterLambda(Action action) {
@@ -26,9 +35,17 @@ public class Lamba {
         action.run("Random name");
     }
 
+    @FunctionalInterface
     private static interface Action {
         void run(String executable);
     }
+
+// Functional Interface with more than one abstract method is invalid
+//    @FunctionalInterface
+//    private static interface Action2 {
+//        void start(String executable);
+//        void stop(String executable);
+//    }
 
     private static void comparatorLambda() {
         final Comparator<Time> hourComparator = (a, b) -> a.getHours() > b.getHours() ? 1 :
@@ -39,7 +56,7 @@ public class Lamba {
             return a.getSeconds() > b.getSeconds() ? 1 : (a.getSeconds() < b.getSeconds() ? -1 : 0);
         };
 
-        final List<Time> times = Arrays.asList(new Time(10, 10, 10), new Time(10, 1, 2), new Time(9, 10, 10), new
+        final List<Time> times = asList(new Time(10, 10, 10), new Time(10, 1, 2), new Time(9, 10, 10), new
                 Time(10, 0, 0), new Time(12, 0, 0), new Time(10, 59, 59));
 
         times.sort(hourComparator);
