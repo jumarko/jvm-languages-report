@@ -38,6 +38,19 @@
     )
   )
 
+; rewrite schwartz using anonymous function literal #()
+(defn schwartz [coll key-fn]
+  ; extract first items from sorted list of pairs
+  (map #(nth %1 0)
+    ; sort temporary list of pairs by second item (result of function applied to element of coll)
+    (sort-by #(nth %1 1)
+      ; create temporary list of pairs ( (x1 f(x1)), (x2, f(x2)), ..., (xn, f(xn)) )
+      (map #(list %1 (key-fn %1))
+        coll
+        ))
+    )
+  )
+
 (schwartz (list "a" "abc" "ab") (fn [x] (do (println "counting x") (count x))))
 ;counting x                                                                               │
 ;counting x                                                                               │
