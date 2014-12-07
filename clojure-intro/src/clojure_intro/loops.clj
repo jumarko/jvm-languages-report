@@ -27,6 +27,20 @@
 
 
 
+; LOOPs
+(defn like-for [counter, max]
+  (loop [ctr counter]
+    (println ctr)
+    (if (< ctr max)
+      (recur (inc ctr))
+      ctr
+      )
+    )
+  )
+
+; for
+(take 50 (for [x (range 100) y (range 10) z (range 5)] (println [x y z])))
+
 
 (defn -main
   "I don't do a whole lot ... yet."
